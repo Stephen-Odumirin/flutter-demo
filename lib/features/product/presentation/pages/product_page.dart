@@ -24,9 +24,9 @@ class ProductPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(product.title, style: Theme.of(context).textTheme.headline6),
+                  Text(product.title, style: Theme.of(context).textTheme.displayMedium),
                   const SizedBox(height: 8),
-                  Text('\$${product.price}', style: Theme.of(context).textTheme.subtitle1),
+                  Text('\$${product.price}', style: Theme.of(context).textTheme.displaySmall),
                   const SizedBox(height: 8),
                   Text(product.description),
                 ],
