@@ -5,9 +5,20 @@ import '../bloc/product_bloc.dart';
 import '../bloc/product_event.dart';
 import '../bloc/product_state.dart';
 
-class ProductPage extends StatelessWidget {
+class ProductPage extends StatefulWidget {
   final int productId;
   const ProductPage({Key? key, required this.productId}) : super(key: key);
+
+  @override
+  State<ProductPage> createState() => _ProductPageState();
+}
+
+class _ProductPageState extends State<ProductPage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<ProductBloc>().add(LoadProduct(widget.productId));
+  }
 
   @override
   Widget build(BuildContext context) {
