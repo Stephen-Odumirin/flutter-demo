@@ -8,6 +8,7 @@ import 'features/auth/data/repositories/auth_repository_impl.dart';
 import 'features/auth/domain/usecases/login.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
 import 'login_wrapper.dart';
+import 'splash_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,20 +29,14 @@ class MyApp extends StatelessWidget {
       title: 'FakeStore App',
       theme: ThemeData(
         useMaterial3: true,
-        colorSchemeSeed: Colors.indigo,
+        colorSchemeSeed: Colors.deepPurple,
         fontFamily: 'Montserrat',
         appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.indigo,
+          backgroundColor: Colors.deepPurple,
           foregroundColor: Colors.white,
         ),
       ),
-      home: RepositoryProvider.value(
-        value: repository,
-        child: BlocProvider(
-          create: (_) => AuthBloc(loginUsecase: Login(repository), prefs: prefs),
-          child: const LoginWrapper(),
-        ),
-      ),
+      home: SplashPage(repository: repository, prefs: prefs),
     );
   }
 }

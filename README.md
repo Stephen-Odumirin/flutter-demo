@@ -14,4 +14,4 @@ flutter pub get
 flutter run
 ```
 
-The home screen loads products from the FakeStore API. Tap a product to view details. Pull to refresh using the floating action button.
+The home screen loads products from the FakeStore API. Tap a product to view details. Swipe down on the lists to refresh their content.

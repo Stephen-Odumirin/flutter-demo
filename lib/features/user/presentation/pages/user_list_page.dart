@@ -18,25 +18,30 @@ class UserListPage extends StatelessWidget {
           if (state is UserLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is UsersLoaded) {
-            return ListView.builder(
-              itemCount: state.users.length,
-              itemBuilder: (context, index) {
-                final user = state.users[index];
-                return ListTile(
-                  title: Text(user.username),
-                  subtitle: Text(user.email),
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => BlocProvider.value(
-                          value: context.read<UserBloc>(),
-                          child: UserPage(userId: user.id),
-                        ),
-                      ),
-                    );
-                  },
-                );
+            return RefreshIndicator(
+              onRefresh: () async {
+                context.read<UserBloc>().add(LoadUsers());
               },
+              child: ListView.builder(
+                itemCount: state.users.length,
+                itemBuilder: (context, index) {
+                  final user = state.users[index];
+                  return ListTile(
+                    title: Text(user.username),
+                    subtitle: Text(user.email),
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => BlocProvider.value(
+                            value: context.read<UserBloc>(),
+                            child: UserPage(userId: user.id),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
             );
           } else if (state is UserError) {
             return Center(child: Text(state.message));
@@ -44,10 +49,7 @@ class UserListPage extends StatelessWidget {
           return const SizedBox.shrink();
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.read<UserBloc>().add(LoadUsers()),
-        child: const Icon(Icons.refresh),
-      ),
+      // Swipe down to refresh the list
     );
   }
 }
