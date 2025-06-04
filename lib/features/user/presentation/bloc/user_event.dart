@@ -17,6 +17,14 @@ class LoadUser extends UserEvent {
   List<Object?> get props => [id];
 }
 
+class LoadUserByUsername extends UserEvent {
+  final String username;
+  const LoadUserByUsername(this.username);
+
+  @override
+  List<Object?> get props => [username];
+}
+
 class AddUserEvent extends UserEvent {
   final User user;
   const AddUserEvent(this.user);

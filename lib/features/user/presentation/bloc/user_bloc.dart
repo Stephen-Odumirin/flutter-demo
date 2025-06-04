@@ -24,6 +24,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }) : super(UserInitial()) {
     on<LoadUsers>(_onLoadUsers);
     on<LoadUser>(_onLoadUser);
+    on<LoadUserByUsername>(_onLoadUserByUsername);
     on<AddUserEvent>(_onAddUser);
     on<UpdateUserEvent>(_onUpdateUser);
     on<DeleteUserEvent>(_onDeleteUser);
@@ -43,6 +44,18 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     emit(UserLoading());
     try {
       final user = await getUser(event.id);
+      emit(UserLoaded(user));
+    } catch (e) {
+      emit(UserError(e.toString()));
+    }
+  }
+
+  Future<void> _onLoadUserByUsername(
+      LoadUserByUsername event, Emitter<UserState> emit) async {
+    emit(UserLoading());
+    try {
+      final users = await getUsers();
+      final user = users.firstWhere((u) => u.username == event.username);
       emit(UserLoaded(user));
     } catch (e) {
       emit(UserError(e.toString()));

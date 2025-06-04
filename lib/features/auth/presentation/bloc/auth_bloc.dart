@@ -9,6 +9,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   AuthBloc({required this.loginUsecase}) : super(AuthInitial()) {
     on<LoginEvent>(_onLogin);
+    on<LogoutEvent>(_onLogout);
   }
 
   Future<void> _onLogin(LoginEvent event, Emitter<AuthState> emit) async {
@@ -19,5 +20,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } catch (e) {
       emit(AuthError(e.toString()));
     }
+  }
+
+  void _onLogout(LogoutEvent event, Emitter<AuthState> emit) {
+    emit(AuthInitial());
   }
 }
