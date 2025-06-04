@@ -2,6 +2,7 @@ import '../../domain/entities/product.dart';
 import '../../domain/repositories/product_repository.dart';
 import '../datasources/product_remote_data_source.dart';
 import '../models/product_model.dart';
+import '../../../../core/error/exceptions.dart';
 
 class ProductRepositoryImpl implements ProductRepository {
   final ProductRemoteDataSource remoteDataSource;
@@ -9,36 +10,64 @@ class ProductRepositoryImpl implements ProductRepository {
 
   @override
   Future<List<Product>> getAllProducts() async {
-    return await remoteDataSource.getAllProducts();
+    try {
+      return await remoteDataSource.getAllProducts();
+    } on ApiException {
+      rethrow;
+    }
   }
 
   @override
   Future<Product> getProduct(int id) async {
-    return await remoteDataSource.getProduct(id);
+    try {
+      return await remoteDataSource.getProduct(id);
+    } on ApiException {
+      rethrow;
+    }
   }
 
   @override
   Future<List<String>> getCategories() async {
-    return await remoteDataSource.getCategories();
+    try {
+      return await remoteDataSource.getCategories();
+    } on ApiException {
+      rethrow;
+    }
   }
 
   @override
   Future<List<Product>> getProductsByCategory(String category) async {
-    return await remoteDataSource.getProductsByCategory(category);
+    try {
+      return await remoteDataSource.getProductsByCategory(category);
+    } on ApiException {
+      rethrow;
+    }
   }
 
   @override
   Future<Product> addProduct(Product product) async {
-    return await remoteDataSource.addProduct(product as ProductModel);
+    try {
+      return await remoteDataSource.addProduct(product as ProductModel);
+    } on ApiException {
+      rethrow;
+    }
   }
 
   @override
   Future<Product> updateProduct(int id, Map<String, dynamic> data) async {
-    return await remoteDataSource.updateProduct(id, data);
+    try {
+      return await remoteDataSource.updateProduct(id, data);
+    } on ApiException {
+      rethrow;
+    }
   }
 
   @override
   Future<void> deleteProduct(int id) async {
-    return await remoteDataSource.deleteProduct(id);
+    try {
+      return await remoteDataSource.deleteProduct(id);
+    } on ApiException {
+      rethrow;
+    }
   }
 }
