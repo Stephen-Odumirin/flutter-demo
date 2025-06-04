@@ -20,7 +20,9 @@ class _ProductListPageState extends State<ProductListPage> {
   @override
   void initState() {
     super.initState();
-    context.read<ProductBloc>().add(LoadCategories());
+    final bloc = context.read<ProductBloc>();
+    bloc.add(LoadProducts());
+    bloc.add(LoadCategories());
   }
 
   @override
@@ -79,7 +81,10 @@ class _ProductListPageState extends State<ProductListPage> {
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (_) => ProductPage(productId: product.id),
+                                builder: (_) => BlocProvider.value(
+                                  value: context.read<ProductBloc>(),
+                                  child: ProductPage(productId: product.id),
+                                ),
                               ),
                             );
                           },

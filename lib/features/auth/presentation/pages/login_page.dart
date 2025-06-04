@@ -41,25 +41,33 @@ class _LoginPageState extends State<LoginPage> {
               obscureText: true,
             ),
             const SizedBox(height: 16),
-            BlocBuilder<AuthBloc, AuthState>(
-              builder: (context, state) {
-                if (state is AuthLoading) {
-                  return const CircularProgressIndicator();
-                } else if (state is Authenticated) {
-                  return Text('Token: ${state.token.token}');
-                } else if (state is AuthError) {
-                  return Text(state.message);
+            BlocConsumer<AuthBloc, AuthState>(
+              listener: (context, state) {
+                if (state is AuthError) {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(state.message)));
                 }
+              },
+              builder: (context, state) {
+                final isLoading = state is AuthLoading;
                 return ElevatedButton(
-                  onPressed: () {
-                    context.read<AuthBloc>().add(
-                          LoginEvent(
-                            _usernameController.text,
-                            _passwordController.text,
-                          ),
-                        );
-                  },
-                  child: const Text('Login'),
+                  onPressed: isLoading
+                      ? null
+                      : () {
+                          context.read<AuthBloc>().add(
+                                LoginEvent(
+                                  _usernameController.text,
+                                  _passwordController.text,
+                                ),
+                              );
+                        },
+                  child: isLoading
+                      ? const SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Text('Login'),
                 );
               },
             ),

@@ -28,7 +28,10 @@ class UserListPage extends StatelessWidget {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (_) => UserPage(userId: user.id),
+                        builder: (_) => BlocProvider.value(
+                          value: context.read<UserBloc>(),
+                          child: UserPage(userId: user.id),
+                        ),
                       ),
                     );
                   },

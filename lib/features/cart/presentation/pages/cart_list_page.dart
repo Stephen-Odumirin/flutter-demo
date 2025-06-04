@@ -27,7 +27,10 @@ class CartListPage extends StatelessWidget {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (_) => CartPage(cartId: cart.id),
+                        builder: (_) => BlocProvider.value(
+                          value: context.read<CartBloc>(),
+                          child: CartPage(cartId: cart.id),
+                        ),
                       ),
                     );
                   },

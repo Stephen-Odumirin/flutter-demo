@@ -5,9 +5,20 @@ import '../bloc/cart_bloc.dart';
 import '../bloc/cart_event.dart';
 import '../bloc/cart_state.dart';
 
-class CartPage extends StatelessWidget {
+class CartPage extends StatefulWidget {
   final int cartId;
   const CartPage({Key? key, required this.cartId}) : super(key: key);
+
+  @override
+  State<CartPage> createState() => _CartPageState();
+}
+
+class _CartPageState extends State<CartPage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<CartBloc>().add(LoadCart(widget.cartId));
+  }
 
   @override
   Widget build(BuildContext context) {

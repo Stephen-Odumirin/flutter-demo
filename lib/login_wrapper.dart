@@ -11,20 +11,21 @@ class LoginWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
         if (state is Authenticated) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (_) => BlocProvider.value(
-                value: context.read<AuthBloc>(),
-                child: const HomePage(),
-              ),
-            ),
-          );
+          Future.microtask(() => Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (_) => BlocProvider.value(
+                    value: context.read<AuthBloc>(),
+                    child: const HomePage(),
+                  ),
+                ),
+              ));
+          return const SizedBox.shrink();
         }
+        return const LoginPage();
       },
-      child: const LoginPage(),
     );
   }
 }

@@ -5,9 +5,20 @@ import '../bloc/user_bloc.dart';
 import '../bloc/user_event.dart';
 import '../bloc/user_state.dart';
 
-class UserPage extends StatelessWidget {
+class UserPage extends StatefulWidget {
   final int userId;
   const UserPage({Key? key, required this.userId}) : super(key: key);
+
+  @override
+  State<UserPage> createState() => _UserPageState();
+}
+
+class _UserPageState extends State<UserPage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<UserBloc>().add(LoadUser(widget.userId));
+  }
 
   @override
   Widget build(BuildContext context) {
