@@ -7,6 +7,7 @@ import '../../domain/usecases/get_all_products.dart';
 import '../../domain/usecases/get_product.dart';
 import '../../domain/usecases/get_products_by_category.dart';
 import '../../domain/usecases/update_product.dart';
+import '../../../../core/error/exceptions.dart';
 import 'product_event.dart';
 import 'product_state.dart';
 
@@ -36,6 +37,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     try {
       final products = await getAllProducts();
       emit(ProductsLoaded(products));
+    } on ApiException catch (e) {
+      emit(ProductError(e.message));
     } catch (e) {
       emit(ProductError(e.toString()));
     }
@@ -46,6 +49,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     try {
       final product = await getProduct(event.id);
       emit(ProductLoaded(product));
+    } on ApiException catch (e) {
+      emit(ProductError(e.message));
     } catch (e) {
       emit(ProductError(e.toString()));
     }
@@ -55,6 +60,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     try {
       await addProduct(event.product);
       add(LoadProducts());
+    } on ApiException catch (e) {
+      emit(ProductError(e.message));
     } catch (e) {
       emit(ProductError(e.toString()));
     }
@@ -64,6 +71,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     try {
       await updateProduct(event.id, event.data);
       add(LoadProducts());
+    } on ApiException catch (e) {
+      emit(ProductError(e.message));
     } catch (e) {
       emit(ProductError(e.toString()));
     }
@@ -73,6 +82,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     try {
       await deleteProduct(event.id);
       add(LoadProducts());
+    } on ApiException catch (e) {
+      emit(ProductError(e.message));
     } catch (e) {
       emit(ProductError(e.toString()));
     }
