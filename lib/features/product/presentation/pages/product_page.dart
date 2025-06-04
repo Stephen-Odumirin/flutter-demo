@@ -30,15 +30,28 @@ class _ProductPageState extends State<ProductPage> {
             return const Center(child: CircularProgressIndicator());
           } else if (state is ProductLoaded) {
             final product = state.product;
-            return Padding(
+            return SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(product.title, style: Theme.of(context).textTheme.displayMedium),
+                  Center(
+                    child: Image.network(
+                      product.image,
+                      height: 200,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    product.title,
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
                   const SizedBox(height: 8),
-                  Text('\$${product.price}', style: Theme.of(context).textTheme.displaySmall),
-                  const SizedBox(height: 8),
+                  Text(
+                    '\$${product.price}',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: 16),
                   Text(product.description),
                 ],
               ),
