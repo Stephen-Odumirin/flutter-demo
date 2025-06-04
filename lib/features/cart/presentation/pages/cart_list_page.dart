@@ -18,24 +18,29 @@ class CartListPage extends StatelessWidget {
           if (state is CartLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is CartsLoaded) {
-            return ListView.builder(
-              itemCount: state.carts.length,
-              itemBuilder: (context, index) {
-                final cart = state.carts[index];
-                return ListTile(
-                  title: Text('Cart ${cart.id}'),
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => BlocProvider.value(
-                          value: context.read<CartBloc>(),
-                          child: CartPage(cartId: cart.id),
-                        ),
-                      ),
-                    );
-                  },
-                );
+            return RefreshIndicator(
+              onRefresh: () async {
+                context.read<CartBloc>().add(LoadCarts());
               },
+              child: ListView.builder(
+                itemCount: state.carts.length,
+                itemBuilder: (context, index) {
+                  final cart = state.carts[index];
+                  return ListTile(
+                    title: Text('Cart ${cart.id}'),
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => BlocProvider.value(
+                            value: context.read<CartBloc>(),
+                            child: CartPage(cartId: cart.id),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
             );
           } else if (state is CartError) {
             return Center(child: Text(state.message));
@@ -43,10 +48,7 @@ class CartListPage extends StatelessWidget {
           return const SizedBox.shrink();
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.read<CartBloc>().add(LoadCarts()),
-        child: const Icon(Icons.refresh),
-      ),
+      // Swipe down to refresh the list
     );
   }
 }

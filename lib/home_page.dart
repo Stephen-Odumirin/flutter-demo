@@ -48,6 +48,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
+  final _pages = const [
+    ProductListPage(),
+    CartListPage(),
+    ProfilePage(),
+  ];
 
   late final ProductRepositoryImpl _productRepository;
   late final CartRepositoryImpl _cartRepository;
@@ -127,13 +132,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildBody() {
-    switch (_currentIndex) {
-      case 0:
-        return const ProductListPage();
-      case 1:
-        return const CartListPage();
-      default:
-        return const ProfilePage();
-    }
+    return IndexedStack(
+      index: _currentIndex,
+      children: _pages,
+    );
   }
 }

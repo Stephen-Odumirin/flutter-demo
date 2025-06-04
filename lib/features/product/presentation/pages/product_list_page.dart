@@ -71,25 +71,36 @@ class _ProductListPageState extends State<ProductListPage> {
                       ),
                     ),
                   Expanded(
-                    child: ListView.builder(
-                      itemCount: state.products.length,
-                      itemBuilder: (context, index) {
-                        final product = state.products[index];
-                        return ListTile(
-                          title: Text(product.title),
-                          subtitle: Text('\$${product.price}'),
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => BlocProvider.value(
-                                  value: context.read<ProductBloc>(),
-                                  child: ProductPage(productId: product.id),
-                                ),
-                              ),
-                            );
-                          },
-                        );
+                    child: RefreshIndicator(
+                      onRefresh: () async {
+                        if (_selectedCategory == null || _selectedCategory == 'All') {
+                          context.read<ProductBloc>().add(LoadProducts());
+                        } else {
+                          context.read<ProductBloc>().add(
+                                LoadProductsByCategory(_selectedCategory!),
+                              );
+                        }
                       },
+                      child: ListView.builder(
+                        itemCount: state.products.length,
+                        itemBuilder: (context, index) {
+                          final product = state.products[index];
+                          return ListTile(
+                            title: Text(product.title),
+                            subtitle: Text('\$${product.price}'),
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => BlocProvider.value(
+                                    value: context.read<ProductBloc>(),
+                                    child: ProductPage(productId: product.id),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ],
@@ -101,10 +112,7 @@ class _ProductListPageState extends State<ProductListPage> {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.read<ProductBloc>().add(LoadProducts()),
-        child: const Icon(Icons.refresh),
-      ),
+      // Swipe down to refresh the list
     );
   }
 }
