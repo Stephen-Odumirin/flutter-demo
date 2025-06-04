@@ -33,3 +33,13 @@ class DeleteProductEvent extends ProductEvent {
   final int id;
   const DeleteProductEvent(this.id);
 }
+
+class LoadCategories extends ProductEvent {}
+
+class LoadProductsByCategory extends ProductEvent {
+  final String category;
+  const LoadProductsByCategory(this.category);
+
+  @override
+  List<Object?> get props => [category];
+}

@@ -8,6 +8,8 @@ import 'features/product/domain/usecases/add_product.dart';
 import 'features/product/domain/usecases/delete_product.dart';
 import 'features/product/domain/usecases/get_all_products.dart';
 import 'features/product/domain/usecases/get_product.dart';
+import 'features/product/domain/usecases/get_categories.dart';
+import 'features/product/domain/usecases/get_products_by_category.dart';
 import 'features/product/domain/usecases/update_product.dart';
 import 'features/product/presentation/bloc/product_bloc.dart';
 import 'features/product/presentation/bloc/product_event.dart';
@@ -36,7 +38,11 @@ class MyApp extends StatelessWidget {
             addProduct: AddProduct(repository),
             updateProduct: UpdateProduct(repository),
             deleteProduct: DeleteProduct(repository),
-          )..add(LoadProducts()),
+            getCategories: GetCategories(repository),
+            getProductsByCategory: GetProductsByCategory(repository),
+          )
+            ..add(LoadProducts())
+            ..add(LoadCategories()),
           child: const ProductListPage(),
         ),
       ),
