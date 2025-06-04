@@ -28,7 +28,12 @@ class MyApp extends StatelessWidget {
       title: 'FakeStore App',
       theme: ThemeData(
         useMaterial3: true,
-        colorSchemeSeed: Colors.teal,
+        colorSchemeSeed: Colors.indigo,
+        fontFamily: 'Montserrat',
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.indigo,
+          foregroundColor: Colors.white,
+        ),
       ),
       home: RepositoryProvider.value(
         value: repository,

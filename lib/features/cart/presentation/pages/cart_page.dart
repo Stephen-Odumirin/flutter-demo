@@ -32,7 +32,19 @@ class _CartPageState extends State<CartPage> {
             final cart = state.cart;
             return Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Text('Cart ID: ${cart.id} for user ${cart.userId}'),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Cart ID: ${cart.id}',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  Text('User: ${cart.userId}'),
+                  const SizedBox(height: 16),
+                  const Text('Products'),
+                  ...cart.products.map((p) => Text(p.toString())),
+                ],
+              ),
             );
           } else if (state is CartError) {
             return Center(child: Text(state.message));
